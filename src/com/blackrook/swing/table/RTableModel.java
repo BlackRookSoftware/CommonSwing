@@ -108,6 +108,7 @@ public class RTableModel<T extends Object> extends AbstractTableModel implements
 	 * Adds rows to this model and fires the appropriate method.
 	 * @param row the row to add.
 	 */
+	@SuppressWarnings("unchecked")
 	public void addRows(T ... row)
 	{
 		if (row.length == 0)
@@ -123,6 +124,7 @@ public class RTableModel<T extends Object> extends AbstractTableModel implements
 	 * Adds rows to this model and fires the appropriate method.
 	 * @param row the row to add.
 	 */
+	@SuppressWarnings("unchecked")
 	public void addRows(int start, T ... row)
 	{
 		if (row.length == 0)

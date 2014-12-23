@@ -26,9 +26,10 @@ public class REditableComboField extends RComboField<String>
 	private static class ActionHandler implements ActionListener
 	{
 		@Override
+		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e)
 		{
-			REditableComboField field = (REditableComboField)(((JComboBox)e.getSource()).getParent());
+			REditableComboField field = (REditableComboField)(((JComboBox<String>)e.getSource()).getParent());
 			if (!field.containsItem(field.getValue()))
 				field.addItem(field.getValue());
 		}

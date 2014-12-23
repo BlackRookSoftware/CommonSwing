@@ -20,7 +20,7 @@ import com.blackrook.commons.list.List;
  * Combo box field class.
  * @author Matthew Tropiano
  */
-public class RComboField<T extends Object> extends RInputFieldPanel<JComboBox, T>
+public class RComboField<T extends Object> extends RInputFieldPanel<JComboBox<T>, T>
 	implements RFocusEventListener, RChangeEventListener
 {
 	private static final long serialVersionUID = -757291379482826048L;
@@ -33,7 +33,7 @@ public class RComboField<T extends Object> extends RInputFieldPanel<JComboBox, T
 		@Override
 		public void itemStateChanged(ItemEvent e)
 		{
-			RComboField<?> field = (RComboField<?>)(((JComboBox)e.getSource()).getParent());
+			RComboField<?> field = (RComboField<?>)(((JComboBox<?>)e.getSource()).getParent());
 			if (e.getStateChange() == ItemEvent.SELECTED)
 				field.onChange();
 		}
@@ -70,9 +70,10 @@ public class RComboField<T extends Object> extends RInputFieldPanel<JComboBox, T
 	 * @param labelSpacing	the width of the label area.
 	 * @param objects		the list of objects that are on this combo box.
 	 */
+	@SafeVarargs
 	public RComboField(String label, int labelSpacing, T ... objects)
 	{
-		super(label, new JComboBox(), labelSpacing);
+		super(label, new JComboBox<T>(), labelSpacing);
 		if (objects != null) for (T obj : objects)
 			field.addItem(obj);
 		field.addItemListener(STATIC_CHANGEHANDLER);
@@ -85,7 +86,7 @@ public class RComboField<T extends Object> extends RInputFieldPanel<JComboBox, T
 	 * @param labelSpacing	the width of the label area.
 	 * @param comboBox		the combo box to encapsulate.
 	 */
-	public RComboField(String label, int labelSpacing, JComboBox comboBox)
+	public RComboField(String label, int labelSpacing, JComboBox<T> comboBox)
 	{
 		super(label, comboBox, labelSpacing);
 		field.addItemListener(STATIC_CHANGEHANDLER);

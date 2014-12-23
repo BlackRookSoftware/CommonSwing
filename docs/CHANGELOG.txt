@@ -1,5 +1,11 @@
 Commons Swing (C) Black Rook Software, All rights reserved.
 
+Changed in 2.5.6
+================
+
+- Changed: Added generics to encapsulated Swing components. As a result, this 
+  now requires Java 7 to run.
+
 Changed in 2.5.5
 ================
 

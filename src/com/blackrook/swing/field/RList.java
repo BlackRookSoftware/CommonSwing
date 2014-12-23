@@ -86,9 +86,9 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	}
 	
 	/** The list itself. */
-	protected JList list;
+	protected JList<T> list;
 	/** The list's data model. */
-	protected DefaultListModel dataModel;
+	protected DefaultListModel<T> dataModel;
 	/** The scrolling pane for this list. */
 	protected JScrollPane scrollPane;
 
@@ -119,8 +119,8 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	public RList(SelectPolicy selectPolicy, VPolicy vsbPolicy, HPolicy hsbPolicy)
 	{
 		setLayout(new BorderLayout());
-		dataModel = new DefaultListModel();
-		list = new JList(dataModel);
+		dataModel = new DefaultListModel<T>();
+		list = new JList<T>(dataModel);
 		list.setSelectionMode(selectPolicy.intern);
 		list.addListSelectionListener(new ListSelectionListener()
 		{
@@ -160,7 +160,7 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Sets the item renderer for item cells in the list.
 	 * See JList.setCellRenderer().
 	 */
-	public void setItemRenderer(ListCellRenderer cellRenderer)
+	public void setItemRenderer(ListCellRenderer<T> cellRenderer)
 	{
 		list.setCellRenderer(cellRenderer);
 	}
@@ -186,10 +186,9 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	/**
 	 * Returns the item at a particular index in the list.
 	 */
-	@SuppressWarnings("unchecked")
 	public T getItem(int index)
 	{
-		return (T)dataModel.get(index);
+		return dataModel.get(index);
 	}
 	
 	/**
@@ -250,7 +249,6 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Removes an item from the list at a specific index.
 	 * @param index the index from which to remove the object.
 	 */
-	@SuppressWarnings("unchecked")
 	public T removeItem(int index)
 	{
 		T out = (T)dataModel.remove(index);
@@ -279,7 +277,6 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Returns the first selected object in the list.
 	 * Returns null if no object selected.
 	 */
-	@SuppressWarnings("unchecked")
 	public T getSelected()
 	{
 		int s = getSelectedIndex();

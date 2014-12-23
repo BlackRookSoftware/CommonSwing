@@ -221,7 +221,7 @@ public class RDateField extends RInputFieldAbstract<GregorianCalendar>
 		private static final long serialVersionUID = 5363730190643034560L;
 
 		/** Month selection box. */
-		protected JComboBox monthBox;
+		protected JComboBox<String> monthBox;
 		/** Year selection box. */
 		protected JSpinner yearBox;
 		/** The buttons with all of the dates on them. */
@@ -280,18 +280,19 @@ public class RDateField extends RInputFieldAbstract<GregorianCalendar>
 		}
 
 		/** Creates the month drop-down. */
-		protected JComboBox makeMonthBox()
+		protected JComboBox<String> makeMonthBox()
 		{
-			JComboBox out = new JComboBox();
+			JComboBox<String> out = new JComboBox<String>();
 			out.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			out.addItemListener(new ItemListener()
 			{
 				@Override
+				@SuppressWarnings("unchecked")
 				public void itemStateChanged(ItemEvent e)
 				{
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
-						JComboBox cb = (JComboBox)e.getSource();
+						JComboBox<String> cb = (JComboBox<String>)e.getSource();
 						calendar.set(GregorianCalendar.MONTH, cb.getSelectedIndex());
 						setDateButtons();
 					}
