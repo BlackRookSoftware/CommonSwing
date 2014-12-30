@@ -1,5 +1,10 @@
 Commons Swing (C) Black Rook Software, All rights reserved.
 
+Changed in 2.6.0
+================
+
+- Version change: Really should be 2.6 for base Java version change.
+
 Changed in 2.5.6
 ================
 
