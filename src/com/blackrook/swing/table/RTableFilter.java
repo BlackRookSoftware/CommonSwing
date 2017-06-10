@@ -13,7 +13,7 @@ import javax.swing.RowFilter;
  * The table filter for RTables. When set on the table, rows are filtered.
  * @author Matthew Tropiano
  * @param <T> matching object.
- * @since
+ * @since 2.5.0
  */
 public abstract class RTableFilter<T> extends RowFilter<RTableModel<T>, Integer>
 {

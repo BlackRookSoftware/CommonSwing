@@ -8,9 +8,12 @@
 package com.blackrook.swing.field;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -86,11 +89,11 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	}
 	
 	/** The list itself. */
-	protected JList<T> list;
+	private JList<T> list;
 	/** The list's data model. */
-	protected DefaultListModel<T> dataModel;
+	private DefaultListModel<T> dataModel;
 	/** The scrolling pane for this list. */
-	protected JScrollPane scrollPane;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Creates a new, empty RList with single selection 
@@ -131,6 +134,21 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 					onSelect();
 			}
 		});
+		
+		list.setCellRenderer(new ListCellRenderer<T>()
+		{
+			private DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+			
+			@Override
+			public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected, boolean cellHasFocus)
+			{
+				JLabel renderer = (JLabel)defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				renderer.setText(getItemString(value));
+				return renderer;
+			}
+			
+		});
+		
 		scrollPane = new JScrollPane(list, vsbPolicy.intern, hsbPolicy.intern);
 		scrollPane.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		add(scrollPane, BorderLayout.CENTER);
@@ -313,6 +331,17 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	public int getItemCount()
 	{
 		return dataModel.getSize();
+	}
+	
+	/**
+	 * The default list renderer uses this method to return
+	 * what to display as a string. By default this is <code>item.toString()</code>.
+	 * @return the string to use. Should not return null.
+	 * @since 2.6.1
+	 */
+	public String getItemString(T item)
+	{
+		return item.toString();
 	}
 	
 	@Override
