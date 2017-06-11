@@ -1,9 +1,10 @@
 Commons Swing (C) Black Rook Software, All rights reserved.
 
-Changed in 2.6.1
+Slated for 2.7.0
 ================
 
-- RList: Moved to another package and added filtering.
+- RList: Moved to another package.
+
 
 Changed in 2.6.0
 ================

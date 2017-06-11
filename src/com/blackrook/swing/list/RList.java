@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
  ******************************************************************************/
-package com.blackrook.swing.field;
+package com.blackrook.swing.list;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -24,6 +24,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.blackrook.commons.list.List;
+import com.blackrook.swing.field.RListEventListener;
 
 /**
  * List type for keeping track of a list of objects.
@@ -181,6 +182,27 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	public void setItemRenderer(ListCellRenderer<T> cellRenderer)
 	{
 		list.setCellRenderer(cellRenderer);
+	}
+	
+	/** 
+	 * Sets the selected item in the list.
+	 * @param item the item to select in the list. Can be null for no selection.
+	 * @since 2.6.2
+	 */
+	public void setSelected(T item)
+	{
+		if (item == null)
+		{
+			list.clearSelection();
+			return;
+		}
+			
+		for (int i = 0; i < dataModel.size(); i++)
+		{
+			if (getItem(i).equals(item))
+				setSelectedIndex(i);
+		}
+		
 	}
 	
 	/** 
