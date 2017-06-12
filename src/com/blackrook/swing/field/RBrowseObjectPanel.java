@@ -87,6 +87,8 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	protected JTextField textField;
 	/** Label field. */
 	private T browsedObject;
+	/** Last object. */
+	private T lastObject;
 
 	/**
 	 * Creates a new object browser panel.
@@ -126,6 +128,8 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	public RBrowseObjectPanel(String title, int spacing, String browseButtonName)
 	{
 		super(title, spacing);
+		this.lastObject = null;
+		this.browsedObject = null;
 		JPanel inputPanel = getInputComponent();
 		inputPanel.setLayout(new BorderLayout());
 		inputPanel.add(textField = makeTextField(), BorderLayout.CENTER);
@@ -169,8 +173,15 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	@Override
 	public final void setValue(T value)
 	{
+		lastObject = browsedObject;
 		browsedObject = value;
 		textField.setText(getObjectName(value));
+		if (lastObject != null && browsedObject != null && !browsedObject.equals(lastObject))
+			onChange();
+		else if (lastObject != null && browsedObject == null)
+			onChange();
+		else if (lastObject == null && browsedObject != null)
+			onChange();
 	}
 	
 	/**
