@@ -154,19 +154,23 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 			{
 				T obj;
 				if ((obj = onBrowse()) != null)
-				{
-					browsedObject = obj;
-					textField.setText(getObjectName(obj));
-				}
+					setValue(obj);
 			}
 		});
 		return out;
 	}
 
 	@Override
-	public T getValue()
+	public final T getValue()
 	{
 		return browsedObject;
+	}
+	
+	@Override
+	public final void setValue(T value)
+	{
+		browsedObject = value;
+		textField.setText(getObjectName(value));
 	}
 	
 	/**
