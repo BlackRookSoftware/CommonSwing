@@ -189,9 +189,7 @@ public abstract class RBrowseObjectField<T> extends RInputFieldAbstract<T> imple
 	 */
 	protected void changeValue()
 	{
-		T obj;
-		if ((obj = onNameChange(textField.getText())) != null)
-			browsedObject = obj;
+		setValue(onNameChange(textField.getText()));
 	}
 	
 	/** 
