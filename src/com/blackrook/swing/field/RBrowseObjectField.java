@@ -24,7 +24,7 @@ import com.blackrook.swing.field.RKeyEventListener;
  * @param <T> object.
  * @since 2.7.0
  */
-public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> implements RChangeEventListener, RKeyEventListener, RFocusEventListener
+public abstract class RBrowseObjectField<T> extends RInputFieldAbstract<T> implements RChangeEventListener, RKeyEventListener, RFocusEventListener
 {
 	private static final long serialVersionUID = -5444583054506716619L;
 	
@@ -36,7 +36,7 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 		@Override
 		public void keyPressed(KeyEvent e)
 		{
-			RBrowseObjectPanel<?> field = (RBrowseObjectPanel<?>)(e.getComponent().getParent().getParent());
+			RBrowseObjectField<?> field = (RBrowseObjectField<?>)(e.getComponent().getParent().getParent());
 			if (e.getKeyCode() == KeyEvent.VK_ENTER)
 			{
 				field.changeValue();
@@ -47,13 +47,13 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 		@Override
 		public void keyReleased(KeyEvent e)
 		{
-			((RBrowseObjectPanel<?>)(e.getComponent().getParent().getParent())).onKeyRelease(e.getKeyCode());
+			((RBrowseObjectField<?>)(e.getComponent().getParent().getParent())).onKeyRelease(e.getKeyCode());
 		}
 	
 		@Override
 		public void keyTyped(KeyEvent e)
 		{
-			((RBrowseObjectPanel<?>)(e.getComponent().getParent().getParent())).onKeyType();
+			((RBrowseObjectField<?>)(e.getComponent().getParent().getParent())).onKeyType();
 		}
 	}
 
@@ -65,14 +65,14 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 		@Override
 		public void focusGained(FocusEvent e)
 		{
-			RBrowseObjectPanel<?> field = (RBrowseObjectPanel<?>)(e.getComponent().getParent().getParent());
+			RBrowseObjectField<?> field = (RBrowseObjectField<?>)(e.getComponent().getParent().getParent());
 			field.onFocus();
 		}
 	
 		@Override
 		public void focusLost(FocusEvent e)
 		{
-			RBrowseObjectPanel<?> field = (RBrowseObjectPanel<?>)(e.getComponent().getParent().getParent());
+			RBrowseObjectField<?> field = (RBrowseObjectField<?>)(e.getComponent().getParent().getParent());
 			field.changeValue();
 			field.onBlur();
 		}
@@ -94,7 +94,7 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	 * Creates a new object browser panel.
 	 * @param title the label title.
 	 */
-	public RBrowseObjectPanel(String title)
+	public RBrowseObjectField(String title)
 	{
 		this(title, -1, "...");
 	}
@@ -104,7 +104,7 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	 * @param title the label title.
 	 * @param browseButtonName the name of the browse button.
 	 */
-	public RBrowseObjectPanel(String title, String browseButtonName)
+	public RBrowseObjectField(String title, String browseButtonName)
 	{
 		this(title, -1, browseButtonName);
 	}
@@ -114,7 +114,7 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	 * @param title the label title.
 	 * @param spacing the spacing width for the label.
 	 */
-	public RBrowseObjectPanel(String title, int spacing)
+	public RBrowseObjectField(String title, int spacing)
 	{
 		this(title, spacing, "...");
 	}
@@ -125,7 +125,7 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	 * @param spacing the spacing width for the label.
 	 * @param browseButtonName the name of the browse button.
 	 */
-	public RBrowseObjectPanel(String title, int spacing, String browseButtonName)
+	public RBrowseObjectField(String title, int spacing, String browseButtonName)
 	{
 		super(title, spacing);
 		this.lastObject = null;
