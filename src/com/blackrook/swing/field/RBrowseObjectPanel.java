@@ -84,7 +84,7 @@ public abstract class RBrowseObjectPanel<T> extends RInputFieldAbstract<T> imple
 	protected static final FocusHandler STATIC_FOCUSHANDLER = new FocusHandler();
 
 	/** Text field. */
-	private JTextField textField;
+	protected JTextField textField;
 	/** Label field. */
 	private T browsedObject;
 
