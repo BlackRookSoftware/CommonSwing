@@ -1,6 +1,7 @@
 package com.blackrook.swing;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
@@ -46,6 +47,9 @@ public class TreeSwing
 			
 			if (branch.layout != null)
 				branchPanel.setLayout(branch.layout);
+
+			if (branch.preferredSize != null)
+				branchPanel.setPreferredSize(branch.preferredSize);
 			
 			if (branch.border != null)
 				branchPanel.setBorder(branch.border);
@@ -75,13 +79,62 @@ public class TreeSwing
 	 * Starts a new branch off of this branch. 
 	 * @param constraints the constraints to use for the added branch (using parent layout).
 	 * @param border the border to add to the panel.
+	 * @param preferredSize the dimensions for the preferred size.
+	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
+	 * @return a new branch.
+	 */
+	public static Branch branch(Object constraints, Border border, Dimension preferredSize, LayoutManager layout, Node ... edges)
+	{
+		Branch out = new Branch(layout, border, preferredSize, constraints);
+		for (Node e : edges)
+			out.edges.add(e); 
+		return out;
+	}
+
+	/**
+	 * Starts a new branch off of this branch. 
+	 * @param constraints the constraints to use for the added branch (using parent layout).
+	 * @param preferredSize the dimensions for the preferred size.
+	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
+	 * @return a new branch.
+	 */
+	public static Branch branch(Object constraints, Dimension preferredSize, LayoutManager layout, Node ... edges)
+	{
+		Branch out = new Branch(layout, null, preferredSize, constraints);
+		for (Node e : edges)
+			out.edges.add(e); 
+		return out;
+	}
+
+	/**
+	 * Starts a new branch off of this branch. 
+	 * @param constraints the constraints to use for the added branch (using parent layout).
+	 * @param border the border to add to the panel.
 	 * @param layout the layout to use for this branch's children.
 	 * @param edges the edges on the branch.
 	 * @return a new branch.
 	 */
 	public static Branch branch(Object constraints, Border border, LayoutManager layout, Node ... edges)
 	{
-		Branch out = new Branch(layout, border, constraints);
+		Branch out = new Branch(layout, border, null, constraints);
+		for (Node e : edges)
+			out.edges.add(e); 
+		return out;
+	}
+
+	/**
+	 * Starts a new branch off of this branch. 
+	 * @param border the border to add to the panel.
+	 * @param preferredSize the dimensions for the preferred size.
+	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
+	 * @return a new branch.
+	 */
+	public static Branch branch(Border border, Dimension preferredSize, LayoutManager layout, Node ... edges)
+	{
+		Branch out = new Branch(layout, border, preferredSize, null);
 		for (Node e : edges)
 			out.edges.add(e); 
 		return out;
@@ -91,11 +144,27 @@ public class TreeSwing
 	 * Starts a new branch off of this branch. 
 	 * @param border the border to add to the panel.
 	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
 	 * @return a new branch.
 	 */
 	public static Branch branch(Border border, LayoutManager layout, Node ... edges)
 	{
-		Branch out = new Branch(layout, border, null);
+		Branch out = new Branch(layout, border, null, null);
+		for (Node e : edges)
+			out.edges.add(e); 
+		return out;
+	}
+
+	/**
+	 * Starts a new branch off of this branch. 
+	 * @param preferredSize the dimensions for the preferred size.
+	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
+	 * @return a new branch.
+	 */
+	public static Branch branch(Dimension preferredSize, LayoutManager layout, Node ... edges)
+	{
+		Branch out = new Branch(layout, null, preferredSize, null);
 		for (Node e : edges)
 			out.edges.add(e); 
 		return out;
@@ -105,11 +174,12 @@ public class TreeSwing
 	 * Starts a new branch off of this branch. 
 	 * @param constraints the constraints to use for the added branch (using parent layout).
 	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
 	 * @return a new branch.
 	 */
 	public static Branch branch(Object constraints, LayoutManager layout, Node ... edges)
 	{
-		Branch out = new Branch(layout, null, constraints);
+		Branch out = new Branch(layout, null, null, constraints);
 		for (Node e : edges)
 			out.edges.add(e); 
 		return out;
@@ -118,11 +188,12 @@ public class TreeSwing
 	/**
 	 * Starts a new branch off of this branch.
 	 * @param layout the layout to use for this branch's children.
+	 * @param edges the edges on the branch.
 	 * @return a new branch.
 	 */
 	public static Branch branch(LayoutManager layout, Node ... edges)
 	{
-		Branch out = new Branch(layout, null, null); 
+		Branch out = new Branch(layout, null, null, null); 
 		for (Node e : edges)
 			out.edges.add(e); 
 		return out;
@@ -183,13 +254,15 @@ public class TreeSwing
 	public static class Branch extends Node
 	{
 		protected Border border;
+		protected Dimension preferredSize;
 		protected LayoutManager layout; 
 		protected Queue<Node> edges;
 		
-		protected Branch(LayoutManager layout, Border border, Object constraints)
+		protected Branch(LayoutManager layout, Border border, Dimension preferredSize, Object constraints)
 		{
 			super(constraints);
 			this.border = border;
+			this.preferredSize = preferredSize;
 			this.layout = layout;
 			this.edges = new Queue<>();
 		}
