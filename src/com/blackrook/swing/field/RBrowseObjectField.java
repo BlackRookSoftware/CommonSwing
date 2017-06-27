@@ -184,6 +184,13 @@ public abstract class RBrowseObjectField<T> extends RInputFieldAbstract<T> imple
 			onChange();
 	}
 	
+	@Override
+	public void setEnabled(boolean enabled)
+	{
+		super.setEnabled(enabled);
+		textField.setEnabled(enabled);
+	}
+
 	/**
 	 * Called when the input field changes to set the internal value. 
 	 */
