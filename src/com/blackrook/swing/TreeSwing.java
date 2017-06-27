@@ -1,5 +1,6 @@
 package com.blackrook.swing;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
@@ -28,6 +29,7 @@ public class TreeSwing
 	public Container build()
 	{
 		JPanel out = new JPanel();
+		out.setLayout(new BorderLayout());
 		buildRecurse(out, root);
 		return out;
 	}
