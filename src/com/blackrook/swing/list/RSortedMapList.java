@@ -22,17 +22,20 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.blackrook.commons.ObjectPair;
 import com.blackrook.commons.list.List;
+import com.blackrook.commons.list.SortedMap;
 import com.blackrook.swing.field.RListEventListener;
 
 /**
  * List type for keeping track of a list of objects.
  * This is already enclosed in a JScrollPane which contains a JList object.
  * @author Matthew Tropiano
+ * @since 2.7.0
  */
-public class RList<T extends Object> extends JPanel implements RListEventListener<T>
+public class RSortedMapList<K extends Comparable<K>, V extends Object> extends JPanel implements RListEventListener<ObjectPair<K, V>>
 {
-	private static final long serialVersionUID = 929879343687450071L;
+	private static final long serialVersionUID = 3715137153694129808L;
 
 	/**
 	 * Selection policy.
@@ -89,9 +92,9 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	}
 	
 	/** The list itself. */
-	private JList<T> list;
+	private JList<ObjectPair<K, V>> list;
 	/** The list's data model. */
-	private RListModel<T> dataModel;
+	private RSortedMapListModel<K, V> dataModel;
 	/** The scrolling pane for this list. */
 	private JScrollPane scrollPane;
 
@@ -99,7 +102,7 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Creates a new, empty RList with single selection 
 	 * policy and both scrollbars appearing as needed.
 	 */
-	public RList()
+	public RSortedMapList()
 	{
 		this(SelectPolicy.SINGLE, VPolicy.AS_NEEDED, HPolicy.AS_NEEDED);
 	}
@@ -108,9 +111,8 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Creates a new, empty RList with single selection 
 	 * policy and both scrollbars appearing as needed.
 	 * @param backingList	the backing list - items are read from and written to the list.
-	 * @since 2.7.0
 	 */
-	public RList(List<T> backingList)
+	public RSortedMapList(SortedMap<K, V> backingList)
 	{
 		this(backingList, SelectPolicy.SINGLE, VPolicy.AS_NEEDED, HPolicy.AS_NEEDED);
 	}
@@ -119,7 +121,7 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Creates a new, empty RList with both scrollbars appearing as needed.
 	 * @param selectPolicy	selection policy for the list.
 	 */
-	public RList(SelectPolicy selectPolicy)
+	public RSortedMapList(SelectPolicy selectPolicy)
 	{
 		this(selectPolicy, VPolicy.AS_NEEDED, HPolicy.AS_NEEDED);
 	}
@@ -128,9 +130,8 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Creates a new RList with both scrollbars appearing as needed.
 	 * @param backingList	the backing list - items are read from and written to the list.
 	 * @param selectPolicy	selection policy for the list.
-	 * @since 2.7.0
 	 */
-	public RList(List<T> backingList, SelectPolicy selectPolicy)
+	public RSortedMapList(SortedMap<K, V> backingList, SelectPolicy selectPolicy)
 	{
 		this(backingList, selectPolicy, VPolicy.AS_NEEDED, HPolicy.AS_NEEDED);
 	}
@@ -141,9 +142,9 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * @param vsbPolicy		the vertical scrollbar policy.
 	 * @param hsbPolicy		the horizontal scrollbar policy.
 	 */
-	public RList(SelectPolicy selectPolicy, VPolicy vsbPolicy, HPolicy hsbPolicy)
+	public RSortedMapList(SelectPolicy selectPolicy, VPolicy vsbPolicy, HPolicy hsbPolicy)
 	{
-		this(new List<>(), selectPolicy, vsbPolicy, hsbPolicy);
+		this(new SortedMap<>(), selectPolicy, vsbPolicy, hsbPolicy);
 	}
 	
 	/**
@@ -152,12 +153,11 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * @param selectPolicy	selection policy for the list.
 	 * @param vsbPolicy		the vertical scrollbar policy.
 	 * @param hsbPolicy		the horizontal scrollbar policy.
-	 * @since 2.7.0
 	 */
-	public RList(List<T> backingList, SelectPolicy selectPolicy, VPolicy vsbPolicy, HPolicy hsbPolicy)
+	public RSortedMapList(SortedMap<K, V> backingList, SelectPolicy selectPolicy, VPolicy vsbPolicy, HPolicy hsbPolicy)
 	{
-		this.dataModel = new RListModel<T>(backingList);
-		this.list = new JList<T>(dataModel);
+		this.dataModel = new RSortedMapListModel<>(backingList);
+		this.list = new JList<ObjectPair<K, V>>(dataModel);
 		
 		list.setSelectionMode(selectPolicy.intern);
 		list.addListSelectionListener(new ListSelectionListener()
@@ -170,15 +170,15 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 			}
 		});
 		
-		list.setCellRenderer(new ListCellRenderer<T>()
+		list.setCellRenderer(new ListCellRenderer<ObjectPair<K, V>>()
 		{
 			private DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 			
 			@Override
-			public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected, boolean cellHasFocus)
+			public Component getListCellRendererComponent(JList<? extends ObjectPair<K, V>> list, ObjectPair<K, V> value, int index, boolean isSelected, boolean cellHasFocus)
 			{
 				JLabel renderer = (JLabel)defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				renderer.setText(getItemString(value));
+				renderer.setText(getItemString(value.getKey()));
 				return renderer;
 			}
 			
@@ -215,30 +215,34 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	 * Sets the item renderer for item cells in the list.
 	 * See JList.setCellRenderer().
 	 */
-	public void setItemRenderer(ListCellRenderer<T> cellRenderer)
+	public void setItemRenderer(ListCellRenderer<ObjectPair<K, V>> cellRenderer)
 	{
 		list.setCellRenderer(cellRenderer);
 	}
 	
 	/** 
-	 * Sets the selected item in the list.
-	 * @param item the item to select in the list. Can be null for no selection.
-	 * @since 2.6.2
+	 * Sets the selected item in the list using the key.
+	 * @param key the key of the item to select in the list. Can be null for no selection.
 	 */
-	public void setSelected(T item)
+	public void setSelectedKey(K key)
 	{
-		if (item == null)
-		{
+		if (key == null)
 			list.clearSelection();
-			return;
-		}
-			
-		for (int i = 0; i < dataModel.getSize(); i++)
-		{
-			if (getItem(i).equals(item))
-				setSelectedIndex(i);
-		}
-		
+		else
+			setSelectedIndex(dataModel.getIndexOf(key));
+	}
+	
+	/** 
+	 * Sets the selected item in the list using a value.
+	 * The first matching value is selected.
+	 * @param value the item to select in the list. Can be null for no selection.
+	 */
+	public void setSelectedValue(V value)
+	{
+		if (value == null)
+			list.clearSelection();
+		else
+			setSelectedIndex(dataModel.getIndexOfValue(value));
 	}
 	
 	/** 
@@ -260,6 +264,77 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	}
 	
 	/**
+	 * Gets the key of an item in the list.
+	 * @param index the index to use.
+	 * @return the key at a particular index in the list, or null if bad index.
+	 */
+	public K getKey(int index)
+	{
+		return dataModel.getKey(index);
+	}
+	
+	/**
+	 * Gets the value of an item in the list.
+	 * @param index the index to use.
+	 * @return the value at a particular index in the list, or null if bad index.
+	 */
+	public V getValue(int index)
+	{
+		return dataModel.getValue(index);
+	}
+	
+	/**
+	 * Returns the items between two particular indices in the list,
+	 * exclusively.
+	 */
+	public Iterable<ObjectPair<K, V>> getItems(int index0, int index1)
+	{
+		List<ObjectPair<K, V>> alist = new List<ObjectPair<K, V>>(index1 - index0);
+		for (int i = index0; i < index1; i++)
+			alist.add(dataModel.getElementAt(i));
+		return alist;
+	}
+	
+	/**
+	 * Adds an item to the list.
+	 * If an item has the same key, it is replaced.
+	 * @param key the item key.
+	 * @param value the item value.
+	 */
+	public void addItem(K key, V value)
+	{
+		dataModel.replace(key, value);
+		onAdd(dataModel.getElementAt(dataModel.getIndexOf(key)));
+	}
+	
+	/**
+	 * Removes an item from the list.
+	 * @param key the item key.
+	 * @return the corresponding value if removed, null if not.
+	 */
+	public V removeItem(K key)
+	{
+		int index = dataModel.getIndexOf(key);
+		if (index < 0)
+			return null;
+		else
+			return removeItem(index);
+	}
+	
+	/**
+	 * Removes an item from the list at a specific index.
+	 * @param index the index from which to remove the object.
+	 * @return the corresponding value if removed, null if not.
+	 */
+	public V removeItem(int index)
+	{
+		ObjectPair<K, V> pair = dataModel.getElementAt(index);
+		dataModel.removeValueAtIndex(index);
+		onRemove(pair);
+		return pair.getValue();
+	}
+
+	/**
 	 * Returns the first selected index in the list.
 	 * Returns -1 if nothing selected.
 	 */
@@ -267,7 +342,7 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	{
 		return list.getSelectedIndex();
 	}
-
+	
 	/**
 	 * Returns all of the selected indices in the list.
 	 */
@@ -275,159 +350,120 @@ public class RList<T extends Object> extends JPanel implements RListEventListene
 	{
 		return list.getSelectedIndices();
 	}
-
+	
 	/**
-	 * Returns the first selected object in the list.
-	 * Returns null if no object selected.
+	 * Returns the first selected key in the list.
+	 * @return the object key or null if no object selected.
 	 */
-	public T getSelected()
+	public K getSelectedKey()
 	{
 		int s = getSelectedIndex();
 		if (s < 0) return null;
-		return (T)dataModel.getElementAt(s);
+		return dataModel.getKey(s);
 	}
-
+	
 	/**
-	 * Returns the selected object in the list.
-	 * Returns null if no object selected.
+	 * Returns the first selected value in the list.
+	 * @return the object value or null if no object selected.
 	 */
-	public Iterable<T> getAllSelected()
+	public V getSelectedValue()
+	{
+		int s = getSelectedIndex();
+		if (s < 0) return null;
+		return dataModel.getValue(s);
+	}
+	
+	/**
+	 * Returns the selected object keys in the list.
+	 * @return the selected object keys.
+	 */
+	public Iterable<K> getAllSelectedKeys()
 	{
 		int[] s = getSelectedIndices();
-		List<T> alist = new List<T>(s.length);
+		List<K> alist = new List<K>(s.length);
 		for (int i : s)
-			alist.add(getItem(i));
+			alist.add(getKey(i));
 		return alist;
 	}
-
+	
 	/**
-	 * Returns all of the items in this list.
+	 * Returns the selected object keys in the list.
+	 * @return the selected object keys.
 	 */
-	public Iterable<T> getAllItems()
+	public Iterable<V> getAllSelectedValues()
 	{
-		List<T> alist = new List<T>(dataModel.getSize());
-		for (T obj : dataModel)
+		int[] s = getSelectedIndices();
+		List<V> alist = new List<V>(s.length);
+		for (int i : s)
+			alist.add(getValue(i));
+		return alist;
+	}
+	
+	/**
+	 * @return all of the item keys in this list.
+	 */
+	public Iterable<K> getAllKeys()
+	{
+		List<K> alist = new List<K>(dataModel.getSize());
+		for (ObjectPair<K, V> obj : dataModel)
+			alist.add(obj.getKey());
+		return alist;
+	}
+	
+	/**
+	 * @return all of the item values in this list.
+	 */
+	public Iterable<V> getAllValues()
+	{
+		List<V> alist = new List<V>(dataModel.getSize());
+		for (ObjectPair<K, V> obj : dataModel)
+			alist.add(obj.getValue());
+		return alist;
+	}
+	
+	/**
+	 * @return all of the item values in this list.
+	 */
+	public Iterable<ObjectPair<K, V>> getAllItems()
+	{
+		List<ObjectPair<K, V>> alist = new List<ObjectPair<K, V>>(dataModel.getSize());
+		for (ObjectPair<K, V> obj : dataModel)
 			alist.add(obj);
 		return alist;
 	}
-
+	
 	/** Returns the amount of items in the list. */
 	public int getItemCount()
 	{
 		return dataModel.getSize();
 	}
-
+	
 	/**
 	 * The default cell renderer uses this method to return
-	 * what to display as a string. By default this is <code>item.toString()</code>.
+	 * what to display as a string. By default this is the key's <code>toString()</code>.
 	 * @return the string to use. Should not return null.
-	 * @since 2.6.1
 	 */
-	public String getItemString(T item)
+	public String getItemString(K key)
 	{
-		return item.toString();
-	}
-
-	/**
-	 * Checks if this list contains an item.
-	 * @param item the item to check for.
-	 * @return true if so, false if not.
-	 * @since 2.7.0
-	 */
-	public boolean containsItem(T item)
-	{
-		return dataModel.contains(item);
+		return key.toString();
 	}
 	
-	/**
-	 * Returns the item at a particular index in the list.
-	 */
-	public T getItem(int index)
-	{
-		return dataModel.getElementAt(index);
-	}
-	
-	/**
-	 * Returns the items between two particular indices in the list,
-	 * exclusively.
-	 */
-	public Iterable<T> getItems(int index0, int index1)
-	{
-		List<T> alist = new List<T>(index1 - index0);
-		for (int i = index0; i < index1; i++)
-			alist.add(getItem(i));
-		return alist;
-	}
-	
-	/**
-	 * Adds an item to the list.
-	 * @param object the object to add to the list.
-	 */
-	public void addItem(T object)
-	{
-		dataModel.add(object);
-		onAdd(object);
-	}
-	
-	/**
-	 * Adds a bunch of items to the list.
-	 * @param objects the objects to add to the list.
-	 */
-	public void addItems(T[] objects)
-	{
-		for (T obj : objects)
-			addItem(obj);
-	}
-	
-	/**
-	 * Adds an item to the list at a specific index.
-	 * @param index the index at which to place the object.
-	 * @param object the object to add to the list.
-	 */
-	public void addItem(int index, T object)
-	{
-		dataModel.add(index, object);
-		onAdd(object);
-	}
-
-	/**
-	 * Removes an item from the list.
-	 * @param object the object to remove from the list.
-	 */
-	public boolean removeItem(T object)
-	{
-		boolean b = dataModel.remove(object);
-		if (b) onRemove(object);
-		return b;
-	}
-	
-	/**
-	 * Removes an item from the list at a specific index.
-	 * @param index the index from which to remove the object.
-	 */
-	public T removeItem(int index)
-	{
-		T out = (T)dataModel.removeIndex(index);
-		onRemove(out);
-		return out;
-	}
-
 	/**
 	 * @return this list's data model.
 	 */
-	protected RListModel<T> getDataModel()
+	protected RSortedMapListModel<K, V> getDataModel()
 	{
 		return dataModel;
 	}
 	
 	@Override
-	public void onAdd(T object)
+	public void onAdd(ObjectPair<K, V> object)
 	{
 		// Do nothing.
 	}
 
 	@Override
-	public void onRemove(T object)
+	public void onRemove(ObjectPair<K, V> object)
 	{
 		// Do nothing.
 	}

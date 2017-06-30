@@ -144,13 +144,35 @@ public class RTable<T extends Object> extends JPanel implements Iterable<T>, RTa
 	/**
 	 * Creates a new RTable that stores a class. 
 	 * @param classType the type of class that this stores.
+	 * @param backingList the backing list - items are read from and written to the list.
+	 * @since 2.7.0
+	 */
+	public RTable(Class<T> classType, List<T> backingList)
+	{
+		this(classType, new List<>(), SelectPolicy.SINGLE, VPolicy.ALWAYS, HPolicy.AS_NEEDED);
+	}
+		
+	/**
+	 * Creates a new RTable that stores a class. 
+	 * @param classType the type of class that this stores.
 	 * @param selectPolicy the selection policy to use.
 	 */
 	public RTable(Class<T> classType, SelectPolicy selectPolicy)
 	{
-		this(classType, selectPolicy, VPolicy.ALWAYS, HPolicy.AS_NEEDED);
+		this(classType, new List<>(), selectPolicy, VPolicy.ALWAYS, HPolicy.AS_NEEDED);
 	}
 	
+	/**
+	 * Creates a new RTable that stores a class. 
+	 * @param classType the type of class that this stores.
+	 * @param backingList the backing list - items are read from and written to the list.
+	 * @param selectPolicy the selection policy to use.
+	 * @since 2.7.0
+	 */
+	public RTable(Class<T> classType, List<T> backingList, SelectPolicy selectPolicy)
+	{
+		this(classType, backingList, selectPolicy, VPolicy.ALWAYS, HPolicy.AS_NEEDED);
+	}
 	/**
 	 * Creates a new RTable that stores a class. 
 	 * @param classType the type of class that this stores.
@@ -160,6 +182,20 @@ public class RTable<T extends Object> extends JPanel implements Iterable<T>, RTa
 	 */
 	public RTable(Class<T> classType, SelectPolicy selectPolicy, VPolicy vpolicy, HPolicy hpolicy)
 	{
+		this(classType, new List<>(), selectPolicy, vpolicy, hpolicy);
+	}
+
+	/**
+	 * Creates a new RTable that stores a class. 
+	 * @param classType the type of class that this stores.
+	 * @param backingList the backing list - items are read from and written to the list.
+	 * @param selectPolicy the selection policy to use.
+	 * @param vpolicy the vertical scrollbar policy.
+	 * @param hpolicy the horizontal scrollbar policy.
+	 * @since 2.7.0
+	 */
+	public RTable(Class<T> classType, List<T> backingList, SelectPolicy selectPolicy, VPolicy vpolicy, HPolicy hpolicy)
+	{
 		columnComparatorMap = new HashMap<Integer, Comparator<?>>();
 		classComparatorMap = new HashMap<Class<?>, Comparator<?>>();
 		
@@ -168,7 +204,7 @@ public class RTable<T extends Object> extends JPanel implements Iterable<T>, RTa
 		setClassComparator(Number.class, NUMBER_COMPARATOR);
 		setClassComparator(Date.class, DATE_COMPARATOR);
 		
-		tableModel = new RTableModel<T>(classType);
+		tableModel = new RTableModel<T>(classType, backingList);
 		tableModel.addTableModelListener(tableModelListener);
 		
 		table = new RTableImpl(tableModel, selectPolicy);

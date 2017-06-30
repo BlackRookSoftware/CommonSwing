@@ -5,6 +5,8 @@ Slated for 2.7.0
 
 - RList: Moved to another package.
 - Added: RBrowseObjectPanel.
+- Added: RListModel, used with RList.
+- Added: RSortedMapList, RSortedMapListModel.
 - Added: TreeSwing.
 
 

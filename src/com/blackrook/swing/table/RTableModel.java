@@ -29,15 +29,15 @@ public class RTableModel<T extends Object> extends AbstractTableModel implements
 	private List<Column> columnList;
 	/** Data set. */
 	private List<T> data;
-	
+
 	/**
 	 * Creates a table descriptor using a base class,
 	 * inspecting its getter fields.
 	 */
-	RTableModel(Class<T> classType)
+	RTableModel(Class<T> classType, List<T> backingList)
 	{
 		this.columnList = new List<Column>();
-		this.data = new List<T>();
+		this.data = backingList;
 		
 		for (Method method : classType.getMethods())
 		{
