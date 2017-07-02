@@ -47,6 +47,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void add(T object)
 	{
 		data.add(object);
+		fireIntervalAdded(this, data.size() - 1, data.size() - 1);
 	}
 
 	/**
@@ -59,6 +60,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void add(int index, T object)
 	{
 		data.add(index, object);
+		fireIntervalAdded(this, index, index);
 	}
 
 	/**
@@ -71,6 +73,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void replace(int index, T object)
 	{
 		data.replace(index, object);
+		fireContentsChanged(this, index, index);
 	}
 
 	/**
@@ -82,18 +85,25 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	 */
 	public boolean remove(T object)
 	{
-		return data.remove(object);
+		int index = data.getIndexOf(object);
+		boolean out = data.remove(object);
+		if (out)
+			fireIntervalRemoved(this, index, index);
+		return out;
 	}
 
 	/**
 	 * Removes an object from an index in the model and shifts 
-	 * everything after it down an index position.
+	 * everything after it up an index position.
 	 * @param index the target index.
 	 * @return null if the index is out of bounds or the object at that index.
 	 */
 	public T removeIndex(int index)
 	{
-		return data.removeIndex(index);
+		T out = data.removeIndex(index); 
+		if (out != null)
+			fireIntervalRemoved(this, index, index);
+		return out;
 	}
 
 	/**
@@ -140,6 +150,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void sort()
 	{
 		data.sort();
+		fireContentsChanged(this, 0, data.size() - 1);
 	}
 
 	/**
@@ -150,6 +161,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void sort(Comparator<? super T> comparator)
 	{
 		data.sort(comparator);
+		fireContentsChanged(this, 0, data.size() - 1);
 	}
 
 	/**
@@ -161,6 +173,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void sort(int startIndex, int endIndex)
 	{
 		data.sort(startIndex, endIndex);
+		fireContentsChanged(this, startIndex, endIndex - 1);
 	}
 
 	/**
@@ -173,6 +186,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void sort(Comparator<? super T> comparator, int startIndex, int endIndex)
 	{
 		data.sort(comparator, startIndex, endIndex);
+		fireContentsChanged(this, startIndex, endIndex - 1);
 	}
 
 	/**
@@ -189,6 +203,8 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void swap(int index0, int index1)
 	{
 		data.swap(index0, index1);
+		fireContentsChanged(this, index0, index0);
+		fireContentsChanged(this, index1, index1);
 	}
 
 	/**
@@ -206,6 +222,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void shift(int sourceIndex, int targetIndex)
 	{
 		data.swap(sourceIndex, targetIndex);
+		fireContentsChanged(this, sourceIndex, targetIndex);
 	}
 
 	/**
@@ -216,6 +233,7 @@ public class RListModel<T> extends AbstractListModel<T> implements Iterable<T>
 	public void shuffle(Random random)
 	{
 		data.shuffle(random);
+		fireContentsChanged(this, 0, data.size() - 1);
 	}
 
 	@Override

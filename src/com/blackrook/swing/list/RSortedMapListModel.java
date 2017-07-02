@@ -47,6 +47,8 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	public void add(K key, V value)
 	{
 		data.add(key, value);
+		int keyIndex = data.getIndexOf(key);
+		fireIntervalAdded(this, keyIndex, keyIndex);
 	}
 
 	/**
@@ -58,6 +60,8 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	public void replace(K key, V value)
 	{
 		data.replace(key, value);
+		int keyIndex = data.getIndexOf(key);
+		fireContentsChanged(this, keyIndex, keyIndex);
 	}
 
 	/**
@@ -135,7 +139,11 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	 */
 	public V remove(K key)
 	{
-		return data.remove(key);
+		int index = data.getIndexOf(key);
+		V out = data.remove(key);
+		if (out != null)
+			fireIntervalRemoved(this, index, index);
+		return out;
 	}
 
 	/**
@@ -145,7 +153,11 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	 */
 	public boolean removeByValue(V value)
 	{
-		return data.removeByValue(value);
+		int index = data.getIndexOfValue(value);
+		boolean out = data.removeByValue(value);
+		if (out)
+			fireIntervalRemoved(this, index, index);
+		return out;
 	}
 
 	/**
@@ -154,7 +166,10 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	 */
 	public V removeFirst()
 	{
-		return data.removeFirst();
+		V out = data.removeFirst();
+		if (out != null)
+			fireIntervalRemoved(this, 0, 0);
+		return out;
 	}
 
 	/**
@@ -163,7 +178,10 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	 */
 	public V removeLast()
 	{
-		return data.removeLast();
+		V out = data.removeLast();
+		if (out != null)
+			fireIntervalRemoved(this, data.size() - 1, data.size() - 1);
+		return out;
 	}
 
 	/**
@@ -173,7 +191,10 @@ public class RSortedMapListModel<K extends Comparable<K>, V extends Object> exte
 	 */
 	public V removeValueAtIndex(int index)
 	{
-		return data.removeValueAtIndex(index);
+		V out = data.removeValueAtIndex(index);
+		if (out != null)
+			fireIntervalRemoved(this, index, index);
+		return out;
 	}
 
 	@Override
