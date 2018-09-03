@@ -193,13 +193,13 @@ public class RTimerField extends RInputFieldAbstract<Double>
 		{
 			default:
 			case MILLISECONDS:
-				return new Double(milliseconds);
+				return Double.valueOf(milliseconds);
 			case SECONDS: 
-				return new Double(milliseconds/1000f);
+				return Double.valueOf(milliseconds/1000f);
 			case MINUTES: 
-				return new Double(milliseconds/60000f);
+				return Double.valueOf(milliseconds/60000f);
 			case HOURS: 
-				return new Double(milliseconds/3600000f);
+				return Double.valueOf(milliseconds/3600000f);
 		}
 	}
 

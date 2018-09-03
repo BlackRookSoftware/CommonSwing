@@ -41,7 +41,7 @@ public class RShortField extends RTextField<Short>
 	@Override
 	public Short getValue()
 	{
-		return new Short(field.getText());
+		return Short.valueOf(field.getText());
 	}
 	
 	@Override

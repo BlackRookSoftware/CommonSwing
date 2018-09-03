@@ -42,7 +42,7 @@ public class RLongField extends RTextField<Long>
 	@Override
 	public Long getValue()
 	{
-		return new Long(field.getText());
+		return Long.valueOf(field.getText());
 	}
 
 	@Override

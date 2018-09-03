@@ -42,7 +42,7 @@ public class RIntField extends RTextField<Integer>
 	@Override
 	public Integer getValue()
 	{
-		return new Integer(field.getText());
+		return Integer.valueOf(field.getText());
 	}
 	
 	@Override

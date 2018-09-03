@@ -8,7 +8,7 @@ Slated for 2.7.0
 - Added: RListModel, used with RList.
 - Added: RSortedMapList, RSortedMapListModel.
 - Added: TreeSwing.
-
+- Changed use of deprecated methods for boxing primitives.
 
 Changed in 2.6.0
 ================

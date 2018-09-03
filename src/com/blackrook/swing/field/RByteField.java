@@ -42,7 +42,7 @@ public class RByteField extends RTextField<Byte>
 	@Override
 	public Byte getValue()
 	{
-		return new Byte(field.getText());
+		return Byte.valueOf(field.getText());
 	}
 	
 	@Override

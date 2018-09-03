@@ -42,7 +42,7 @@ public class RDoubleField extends RTextField<Double>
 	@Override
 	public Double getValue()
 	{
-		return new Double(field.getText());
+		return Double.valueOf(field.getText());
 	}
 
 	@Override

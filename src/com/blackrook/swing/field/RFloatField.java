@@ -42,7 +42,7 @@ public class RFloatField extends RTextField<Float>
 	@Override
 	public Float getValue()
 	{
-		return new Float(field.getText());
+		return Float.valueOf(field.getText());
 	}
 
 	@Override
