@@ -1,12 +1,12 @@
 # Black Rook Common Swing
 
-Copyright (c) 2009-2014 Black Rook Software. All rights reserved.  
+Copyright (c) 2009-2019 Black Rook Software. All rights reserved.  
 [http://blackrooksoftware.com/projects.htm?name=commonswing](http://blackrooksoftware.com/projects.htm?name=commonswing)  
 [https://github.com/BlackRookSoftware/CommonSwing](https://github.com/BlackRookSoftware/CommonSwing)
 
 ### Required Libraries
 
-Black Rook Commons 2.8.0+  
+Black Rook Commons 2.32.0+  
 [https://github.com/BlackRookSoftware/Common](https://github.com/BlackRookSoftware/Common)
 
 ### Introduction

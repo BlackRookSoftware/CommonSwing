@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Black Rook Software
+ * Copyright (c) 2009-2019 Black Rook Software
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
@@ -29,8 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import com.blackrook.commons.Common;
-
+import com.blackrook.commons.util.StringUtils;
 
 /**
  * A dialog window for end-user program crashes that, if the JVM 
@@ -146,7 +145,7 @@ public class ProgramCrashDialog extends JDialog
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		jsp.setPreferredSize(new Dimension(600,160));
-		exceptionArea.setText(Common.getExceptionString(exception));
+		exceptionArea.setText(StringUtils.getExceptionString(exception));
 		p.add(jsp, BorderLayout.CENTER);
 		centerPanel.add(p, BorderLayout.CENTER);
 
@@ -220,16 +219,16 @@ public class ProgramCrashDialog extends JDialog
 		sb.append(eMailAddress);
 		sb.append('?');
 		if (eMailSubject != null)
-			sb.append("subject="+Common.urlEscape(eMailSubject));
+			sb.append("subject="+StringUtils.urlEscape(eMailSubject));
 		if (eMailSubject != null)
 			sb.append("&");
-		sb.append("body="+Common.urlEscape(
+		sb.append("body="+StringUtils.urlEscape(
 				(eMailBodyPrefix != null ? eMailBodyPrefix : "") + 
 				"\n\n----------------------------\n\n" +
 				bodyArea.getText() + 
 				"\n\n----------------------------\n\n" +
 				"Stack Trace:\n" +
-				Common.getExceptionString(throwableRef) + "\n\n" +
+				StringUtils.getExceptionString(throwableRef) + "\n\n" +
 				"JVM Properties:\n" +
 				getSystemPropertiesStrings()
 				));

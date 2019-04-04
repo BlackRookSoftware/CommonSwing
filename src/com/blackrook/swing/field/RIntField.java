@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Black Rook Software
+ * Copyright (c) 2009-2019 Black Rook Software
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
@@ -7,7 +7,7 @@
  ******************************************************************************/
 package com.blackrook.swing.field;
 
-import com.blackrook.commons.Common;
+import com.blackrook.commons.util.ValueUtils;
 
 /**
  * A label-plus-field panel for changing integer numeric data.
@@ -48,7 +48,7 @@ public class RIntField extends RTextField<Integer>
 	@Override
 	public void setStringValue(String value)
 	{
-		setValue(Common.parseInt(value, 0));
+		setValue(ValueUtils.parseInt(value, 0));
 	}
 	
 }

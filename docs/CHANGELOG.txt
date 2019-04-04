@@ -1,6 +1,6 @@
 Commons Swing (C) Black Rook Software, All rights reserved.
 
-Slated for 2.7.0
+Changed in 2.7.0
 ================
 
 - RList: Moved to another package.
@@ -9,6 +9,7 @@ Slated for 2.7.0
 - Added: RSortedMapList, RSortedMapListModel.
 - Added: TreeSwing.
 - Changed use of deprecated methods for boxing primitives.
+- Cleaned up Common deprecation from Commons version 2.32.0.
 
 Changed in 2.6.0
 ================

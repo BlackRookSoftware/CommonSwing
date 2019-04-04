@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Black Rook Software
+ * Copyright (c) 2009-2019 Black Rook Software
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import com.blackrook.commons.Common;
+import com.blackrook.commons.Reflect;
 
 /**
  * Time field for starting/stopping a timer and retrieving
@@ -54,11 +54,11 @@ public class RTimerField extends RInputFieldAbstract<Double>
 	{
 		try {
 			PLAY_ICON = new ImageIcon(ImageIO.read(ClassLoader.getSystemResource(
-					Common.getPackagePathForClass(RTimerField.class)+"/data/play.png")));
+					Reflect.getPackagePathForClass(RTimerField.class)+"/data/play.png")));
 			STOP_ICON = new ImageIcon(ImageIO.read(ClassLoader.getSystemResource(
-					Common.getPackagePathForClass(RTimerField.class)+"/data/stop.png")));
+					Reflect.getPackagePathForClass(RTimerField.class)+"/data/stop.png")));
 			PAUSE_ICON = new ImageIcon(ImageIO.read(ClassLoader.getSystemResource(
-					Common.getPackagePathForClass(RTimerField.class)+"/data/pause.png")));
+					Reflect.getPackagePathForClass(RTimerField.class)+"/data/pause.png")));
 		} catch (Exception e) {
 			throw new RuntimeException("Could not initialize time field icons. Internal Error. "+e.getLocalizedMessage());
 		}

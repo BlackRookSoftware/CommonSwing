@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Black Rook Software
+ * Copyright (c) 2009-2019 Black Rook Software
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
@@ -24,8 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileFilter;
 
-import com.blackrook.commons.Common;
 import com.blackrook.commons.list.List;
+import com.blackrook.commons.util.FileUtils;
 
 /**
  * A panel that has a file browsing button.
@@ -320,7 +320,7 @@ public class RFileField extends RInputFieldAbstract<File[]> implements RChangeEv
 		if (rel)
 		{
 			try {
-				out = Common.getRelativePath(relativePath, in.getAbsolutePath());
+				out = FileUtils.getRelativePath(relativePath, in.getAbsolutePath());
 			} catch (IOException e) {}
 		}
 		return out;

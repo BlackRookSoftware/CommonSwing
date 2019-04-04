@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Black Rook Software
+ * Copyright (c) 2009-2019 Black Rook Software
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.blackrook.commons.Common;
+import com.blackrook.commons.util.StringUtils;
 
 /**
  * Filled with common throwaway functions and calls for convenience.
@@ -37,7 +37,7 @@ public final class SwingCommon
 		@Override
 		public void uncaughtException(Thread t, Throwable e)
 		{
-			String out = Common.getExceptionString(e);
+			String out = StringUtils.getExceptionString(e);
 			System.err.println(out);
 			SwingCommon.error(out);
 		}

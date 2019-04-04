@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Black Rook Software
+ * Copyright (c) 2009-2019 Black Rook Software
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
@@ -7,7 +7,7 @@
  ******************************************************************************/
 package com.blackrook.swing.field;
 
-import com.blackrook.commons.Common;
+import com.blackrook.commons.util.ValueUtils;
 
 /**
  * A label-plus-field panel for changing 64-bit integer numeric data.
@@ -48,7 +48,7 @@ public class RLongField extends RTextField<Long>
 	@Override
 	public void setStringValue(String value)
 	{
-		setValue(Common.parseLong(value, 0L));
+		setValue(ValueUtils.parseLong(value, 0L));
 	}
 	
 }
